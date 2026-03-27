@@ -1,0 +1,82 @@
+%pip install faker
+
+import os
+import random
+import textwrap
+from faker import Faker
+import openai
+import time
+from datetime import datetime
+
+TOOLKIT_API_KEY = "sk-MxAwkXJgWudy-sOfXlLz0A"  # Replace with your actual key
+BASE_URL = "https://api.ai.it.ufl.edu/"
+client = openai.OpenAI(api_key=TOOLKIT_API_KEY, base_url=BASE_URL)
+
+output_dir = "AI_Survey_Responses"
+os.makedirs(output_dir, exist_ok=True)
+
+familiarity_levels = ["Low", "Moderate", "High"]
+ai_usage_options = ["Yes", "No"]
+fake = Faker()
+
+def build_prompt(name, familiarity, usage):
+    return (
+        f"Write a 200–300 word open-ended reflection from a fictional college student named {name}. "
+        f"The student is enrolled in 'CTS4935: Ethics and Society in AI' and is submitting an assignment titled 'Reflection on Artificial Intelligence' dated {datetime.today().strftime('%B %d, %Y')}. "
+        f"The student has {familiarity.lower()} familiarity with AI and {'does' if usage == 'Yes' else 'does not'} use AI in daily life. "
+        "The response should be personal, thoughtful, and realistic—like a college student writing a profesional short essay with limited nuances. "
+        "Include their name at the top, followed by the date, course name, and assignment title. "
+        "Do not list metadata separately—embed familiarity and usage naturally into the reflection. "
+        "Avoid generic phrasing and starting with 'When I first'. Make it sound like a real college student with a unique and professional voice."
+    )
+
+#API
+def get_valid_response(prompt, retries=3, delay=5):
+    for attempt in range(retries):
+        try:
+            response = client.chat.completions.create(
+                model="gpt-oss-120b",
+                messages=[{"role": "user", "content": prompt}],
+                temperature=0.85
+            )
+            content = response.choices[0].message.content.strip()
+            word_count = len(content.split())
+            if word_count >= 200 and "response" not in content.lower():
+                return content
+        except Exception as e:
+            print(f"Attempt {attempt+1} failed: {e}")
+        time.sleep(delay)
+    return None
+
+# loop
+saved = 0
+attempts = 0
+while saved < 200:
+    first_name = fake.first_name()
+    last_name = fake.last_name()
+    full_name = f"{first_name} {last_name}"
+    familiarity = random.choice(familiarity_levels)
+    usage = random.choice(ai_usage_options)
+    prompt = build_prompt(full_name, familiarity, usage)
+
+    raw_response = get_valid_response(prompt)
+    attempts += 1
+
+    if raw_response:
+        filename = f"{first_name}_{last_name}.txt"
+        filepath = os.path.join(output_dir, filename)
+        with open(filepath, "w", encoding="utf-8") as file:
+            file.write(textwrap.fill(raw_response, width=80))
+        saved += 1
+        print(f"Saved {saved}/200: {full_name}")
+    else:
+        print(f"Skipped {full_name}: invalid response")
+
+print(f"\n Done! {saved} valid responses saved after {attempts} attempts.")
+
+import shutil
+from google.colab import files
+
+shutil.make_archive("AI_Survey_Responses_Zipped", 'zip', "AI_Survey_Responses")
+
+files.download("AI_Survey_Responses_Zipped.zip")
