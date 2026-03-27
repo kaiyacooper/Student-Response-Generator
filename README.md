@@ -1,4 +1,4 @@
-# Synthetic Response Generator
+# Response Generator
 
 ![License: MIT](https://img.shields.io/badge/License-MIT-yellow?style=flat-square)
 ![Built with: Python](https://img.shields.io/badge/Built%20with-Python-blue?style=flat-square)
