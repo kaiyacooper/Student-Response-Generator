@@ -11,9 +11,7 @@ An AI-powered Python script that generates large sets of realistic, uniquely-nam
 
 ## Why I Built This
 
-I originally built this to generate a batch of sample written responses for a workshop — I needed a large set of varied, realistic submissions from different "people" quickly. Instead of writing them manually or reusing the same names and perspectives, I automated the whole thing. The script uses AI to write each response and a name generator to give every one a unique identity, so the output feels natural and diverse.
-
-It turned out to be useful beyond just that one use case, so I cleaned it up and put it here.
+I originally built this to generate a batch of sample written responses for a workshop. I needed a large set of varied, realistic submissions from different "students" quickly. Instead of writing them manually or picking 200 unique names, I automated the whole thing. The script uses AI to write each response and a name generator to give every one a unique identity.
 
 ---
 
@@ -26,8 +24,6 @@ Run the script and it will automatically:
 3. Use an AI model to write a realistic, human-sounding response based on those attributes
 4. Save each response as its own `.txt` file
 5. Zip everything up and download it when done
-
-The whole batch runs automatically with no manual input after setup.
 
 ---
 
