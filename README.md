@@ -49,6 +49,27 @@ This tool is useful for anyone who needs a lot of varied, realistic text respons
 
 ---
 
+## The Prompt
+
+<details>
+<summary>Click to see the full prompt</summary>
+
+```
+Write a 200–300 word open-ended reflection from a fictional college student named {name}.
+The student is enrolled in 'CTS4935: Ethics and Society in AI' and is submitting an assignment
+titled 'Reflection on Artificial Intelligence' dated {date}. The student has {familiarity}
+familiarity with AI and {does/does not} use AI in daily life. The response should be personal,
+thoughtful, and realistic—like a college student writing a professional short essay with limited
+nuances. Include their name at the top, followed by the date, course name, and assignment title.
+Do not list metadata separately—embed familiarity and usage naturally into the reflection.
+Avoid generic phrasing and starting with 'When I first'. Make it sound like a real college
+student with a unique and professional voice.
+```
+
+</details>
+
+---
+
 ## Stack
 
 - Python 3
